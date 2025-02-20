@@ -3,12 +3,15 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
 const app = express();
-dotenv.config();
+dotenv.config({
+    path: './.env'
+});
 const Port = process.env.PORT || 4000
 
 
 // Files And Controllers
 import { DatabaseConnection } from './configs/DataBaseConnection.js';
+import { userRouter } from './routes/userRoutes.js';
 
 DatabaseConnection()
 
@@ -22,7 +25,7 @@ app.use(cors({
 }));
 
 // Routes
-
+app.use('/api/v1/user', userRouter)
 
 app.use((err, req, res, next) => {
     res.status(err.statusCode).json({
