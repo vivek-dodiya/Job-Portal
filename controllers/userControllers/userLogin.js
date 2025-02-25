@@ -10,7 +10,12 @@ export const login = catchAsyncError(async (req, res, next) => {
         return next(new ErrorHandler(400, 'Please provide all fields'))
     }
     try {
-        const user = await User.findOne({ email });
+        const user = await User.findOne({
+            $or: [
+                { email },
+                { role }
+            ]
+        });
         if (!user) {
             return next(new ErrorHandler(400, 'User Not Exist'))
         };
